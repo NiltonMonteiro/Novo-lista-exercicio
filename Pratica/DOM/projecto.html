@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Estruturado e Formandos</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .username {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .menu {
+            width: 250px;
+            background-color: #817b7b;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .menu h1 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .menu a:hover {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        .dashboard {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        h1 {
+            margin: 20px;
+        }
+
+        form {
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+
+        }
+        .right-align{
+            float: right;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Logo</div>
+        <div class="username">Nome de Usuário</div>
+    </div>
+    <nav class="menu">
+       
+        <img src="lo.jpg" alt="Imagem 1" class="image" width="150px">
+        <a href="#" class="menu-item" data-item="Dashboard" onclick="showDashboard()">Dashboard</a>
+        <a href="#" class="menu-item" data-item="Adicionar Formando" onclick="showDashboard()"> Formand</a>
+        <a href="#" class="menu-item" data-item="Adicionar Formando" onclick="showAddForm()">Exit</a>
+    </nav>
+
+    <div class="dashboard" id="dashboard">
+        <h1>Dashboard</h1>
+        <div>Total de Formandos: <span id="total-formandos">0</span></div><br>
+        <div>Contagem por Curso:</div><br>
+        <ul id="curso-contagem"></ul><br>
+       
+    </div>
+
+
+
+
+    <div class="dashboard" id="dashboard">
+        <h1>Dashboard</h1>
+        <div>Total de Formandos: <span id="total-formandos">0</span></div><br>
+        <div>Contagem por Curso:</div><br>
+        <ul id="curso-contagem"></ul><br>
+        <h2>Lista de Formandos</h2>
+        <button class="right-align" onclick="showAddForm()">NOVO</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Curso</th>
+                    <th>Data de Inscrição</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="formando-table-body">
+                <!-- Formandos serão preenchidos aqui -->
+            </tbody>
+        </table>
+       
+    </div>
+    <div class="dashboard" id="add-form" style="display:none;">
+        <h1></h1>
+        <form id="formando-form">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" required>
+            <label for="morada">Morada:</label>
+            <input type="text" id="morada" required>
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" required>
+            <label for="curso">Curso:</label>
+            <input type="text" id="curso" required>
+            <label for="data-inscricao">Data de Inscrição:</label>
+            <input type="date" id="data-inscricao" required>
+            <button type="submit">Adicionar Formando</button>
+        </form>
+    </div>
+    <script>
+        const formandosKey = 'formandos';
+
+        // Atualiza a tabela e o dashboard
+        function updateTable() {
+            const formandos = JSON.parse(localStorage.getItem(formandosKey)) || [];
+            const tbody = document.getElementById('formando-table-body');
+            tbody.innerHTML = '';
+
+            const cursoCount = {};
+
+            formandos.forEach((formando, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formando.nome}</td>
+                    <td>${formando.curso}</td>
+                    <td>${formando.dataInscricao}</td>
+                    <td><button onclick="removeFormando(${index})">Remover</button></td>
+                `;
+                tbody.appendChild(row);
+
+                cursoCount[formando.curso] = (cursoCount[formando.curso] || 0) + 1;
+            });
+
+            document.getElementById('total-formandos').innerText = formandos.length;
+
+            const cursoContagem = document.getElementById('curso-contagem');
+            cursoContagem.innerHTML = '';
+            for (const curso in cursoCount) {
+                const li = document.createElement('li');
+                li.innerText = `${curso}: ${cursoCount[curso]}`;
+                cursoContagem.appendChild(li);
+            }
+        }
+
+        // Adicionar formando
+        document.getElementById('formando-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const morada = document.getElementById('morada').value;
+            const telefone = document.getElementById('telefone').value;
+            const curso = document.getElementById('curso').value;
+            const dataInscricao = document.getElementById('data-inscricao').value;
+
+            const formandos = JSON.parse(localStorage.getItem(formandosKey)) || [];
+            formandos.push({ nome, morada, telefone, curso, dataInscricao });
+            localStorage.setItem(formandosKey, JSON.stringify(formandos));
+
+            alert('Formando adicionado com sucesso!');
+            document.getElementById('formando-form').reset(); 
+            showDashboard(); 
+            updateTable();
+        });
+
+        // Remover formando
+        function removeFormando(index) {
+            if (confirm('Você tem certeza que deseja remover este formando?')) {
+                const formandos = JSON.parse(localStorage.getItem(formandosKey));
+                formandos.splice(index, 1);
+                localStorage.setItem(formandosKey, JSON.stringify(formandos));
+                alert('Formando removido com sucesso!');
+                updateTable();
+            }
+        }
+
+        // Exibir o painel do dashboard
+        function showDashboard() {
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('add-form').style.display = 'none';
+            updateTable();
+        }
+
+        // Exibir o formulário de adição
+        function showAddForm() {
+            document.getElementById('add-form').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+
+        // Atualiza a tabela ao carregar a página
+        window.onload = showDashboard;
+    </script>
+</body>
+</html>

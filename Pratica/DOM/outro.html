@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divs Animadas</title>
+</head>
+<body>
+    <div class="div">Div 1</div>
+    <div class="div">Div 2</div>
+    <div class="div">Div 3</div>
+    <div class="div">Div 4</div>
+    <div class="div">Div 5</div>
+
+    <script>
+        // Selecionar as divs por classe
+        let divs = document.querySelectorAll('div');
+        const outro =[
+           { backgroundColor: lightcoral, width:'200px', height:'300px'},
+           { backgroundColor: lightblue,  width:'150px', height:'200px' },
+           { backgroundColor: lightgreen, width:'130px', height:'200px' },
+           { backgroundColor: lightgoldenrodyellow,  width:'100px', height:'180px' },
+           { backgroundColor: lightpink,  width:'90px', height:'150px' }
+
+        ];
+
+        // Modificar cada div com animações
+        divs.forEach((div, index) => {
+            div.style.width = outro [index].width; // Largura inicial
+            div.style.height = outro [index].height;// Altura inicial
+            div.style.backgroundColor = outro [index].backgroundColor;
+            div.style.color = outro [index].color;
+
+            // Aumentar largura e altura após um tempo
+            setTimeout(() => {
+                div.style.width = (100 + (index * 20)) + 'px'; // Largura variando
+                div.style.height = (50 + (index * 10)) + 'px'; // Altura variando
+            }, 100 * index); // Delay para cada div
+        });
+    </script>
+</body>
+</html>

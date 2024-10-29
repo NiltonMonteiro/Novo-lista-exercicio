@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        button {
+            padding: 10px 15px;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            color: white; /* Texto branco para melhor contraste */
+        }
+
+        button:first-of-type {
+            background-color: blue; /* Cor azul para o primeiro botão */
+        }
+
+        button:last-of-type {
+            background-color: red; /* Cor vermelha para o segundo botão */
+            border-radius: 5px; /* Bordas arredondadas */
+        }
+    </style>
+</head>
+<body>
+    <h1>Todo list</h1>
+    <input type="text" id="taskInput" placeholder="Digite uma nova tarefa">
+    <button onclick="addTask()">Adicionar Tarefa</button>
+    <button onclick="clearTasks()">Limpar Tarefas</button>
+
+    <div id="taskList"></div>
+
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+            if (taskText === '') {
+                alert('Por favor, insira uma tarefa.');
+                return;
+            }
+
+            const taskList = document.getElementById('taskList');
+            const taskDiv = document.createElement('div');
+            taskDiv.classList.add('task', 'new');
+
+            taskDiv.innerHTML = `
+                <span>${taskText}</span>
+                <div>
+                    <button onclick="completeTask(this)">Concluir</button>
+                    <button onclick="removeTask(this)">Remover</button>
+                </div>
+            `;
+
+            taskList.appendChild(taskDiv);
+            taskInput.value = '';
+        }
+
+        function completeTask(button) {
+            const taskDiv = button.parentElement.parentElement;
+            taskDiv.classList.remove('new');
+            taskDiv.classList.add('completed');
+        }
+
+        function removeTask(button) {
+            const taskDiv = button.parentElement.parentElement;
+            taskDiv.remove();
+        }
+
+        function clearTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+        }
+    </script>
+</body>
+</html>

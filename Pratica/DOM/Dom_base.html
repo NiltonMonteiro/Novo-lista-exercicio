@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="Div Novo"></div>
+    <input type="text" id="textInput" placeholder="escreva algo aqui .">
+    <button id="AdicionarBTN"> Adicionar</button>
+    <div id="Div Novo"></div>
+
+    <script>
+        const div = document.getElementById('Div Novo');
+        div.textContent='Tudo que esta dentro do div.';
+
+
+        div.style.width='300px';
+        div.style.height='200px';
+        div.style.backgroundColor='yellow';        
+
+       
+        const paragrafo=document.createElement('p');
+        paragrafo.textContent='Este é um paragrafo dentro do div.';
+        paragrafo.style.backgroundColor='red';
+
+        
+
+
+        const  div = document.getElementById('Div Novo');
+        const  div = document.getElementById('Div Novo');
+        const  div = document.getElementById('Div Novo');
+
+       
+
+        div.appendChild(paragrafo);
+
+    </script>
+ 
+</body>
+</html>
